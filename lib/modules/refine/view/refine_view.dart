@@ -10,6 +10,7 @@ class RefineView extends StatefulWidget {
 class _RefineViewState extends State<RefineView> {
   String dropdownValue = 'Available | Hey Let Us Connect';
   final TextEditingController _textEditingController = TextEditingController();
+  double _selectedValue = 50;
 
   @override
   void dispose() {
@@ -124,7 +125,88 @@ class _RefineViewState extends State<RefineView> {
               },
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: SizedBox(
+              height: 20,
+              width: 250,
+              child: Text(
+                "Select Hyper local Distance",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 6, 56, 96),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                ),
+                Slider(
+                  value: _selectedValue,
+                  min: 1,
+                  max: 100,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedValue = value;
+                    });
+                  },
+                ),
+                const Positioned(
+                  left: 10,
+                  bottom: 0,
+                  child: Text('1'),
+                ),
+                const Positioned(
+                  right: 10,
+                  bottom: 0,
+                  child: Text('100'),
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: Text(
+              'KMS: ${_selectedValue.round()}',
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  // void main() {
+  //   runApp(const MaterialApp(
+  //     home: RefineView(),
+  //   ));
+  Widget buildNumberItem(int value) {
+    return GestureDetector(
+      onTap: () {
+        // Handle the selection of the number
+      },
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.only(left: 5, right: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey),
+        ),
+        child: Text(
+          value.toString(),
+          style: TextStyle(fontSize: 16),
+        ),
       ),
     );
   }
