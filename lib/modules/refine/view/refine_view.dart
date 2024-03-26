@@ -11,6 +11,18 @@ class _RefineViewState extends State<RefineView> {
   String dropdownValue = 'Available | Hey Let Us Connect';
   final TextEditingController _textEditingController = TextEditingController();
   double _selectedValue = 50;
+  List<String> selectedChips = [
+    "Coffee",
+    "Business",
+    "Hobbies",
+    "Friendship",
+    "Movies",
+    "Dining",
+    "Dating",
+    "Matrimony"
+  ];
+  List<bool> isChipSelected =
+      List.filled(8, false); // Initialize with false values
 
   @override
   void dispose() {
@@ -60,38 +72,15 @@ class _RefineViewState extends State<RefineView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
-              width: 350,
+              width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.grey),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  iconSize: 24,
-                  elevation: 15,
-                  style: const TextStyle(color: Colors.black),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownValue = newValue!;
-                    });
-                  },
-                  items: <String>[
-                    'Available | Hey Let Us Connect',
-                    'Away | Stat Discrete and Watch',
-                    'Busy | Do Not Disturb | Will Catch Up Later',
-                    'SOS | Emergency! Need Assistance! HELP'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: dropDownButton()),
             ),
           ),
           const Padding(
@@ -119,7 +108,7 @@ class _RefineViewState extends State<RefineView> {
                 ),
               ),
               maxLength: 250,
-              maxLines: null,
+              maxLines: 3,
               onChanged: (text) {
                 setState(() {});
               },
@@ -140,72 +129,149 @@ class _RefineViewState extends State<RefineView> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
-                Slider(
-                  value: _selectedValue,
-                  min: 1,
-                  max: 100,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedValue = value;
-                    });
-                  },
-                ),
-                const Positioned(
-                  left: 10,
-                  bottom: 0,
-                  child: Text('1'),
-                ),
-                const Positioned(
-                  right: 10,
-                  bottom: 0,
-                  child: Text('100'),
-                ),
-              ],
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: sliderBar()),
           Center(
             child: Text(
               'KMS: ${_selectedValue.round()}',
               style: const TextStyle(fontSize: 16),
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: SizedBox(
+              height: 20,
+              width: 250,
+              child: Text(
+                "Select Purpose",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 6, 56, 96),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: List.generate(
+              selectedChips.length,
+              (index) => GestureDetector(
+                onTap: () {
+                  setState(() {
+                    // Toggle the selection status of the chip
+                    isChipSelected[index] = !isChipSelected[index];
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                      color: isChipSelected[index] // Cehck if chip is selected
+                          ? Color.fromARGB(255, 6, 41, 70)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all()),
+                  child: Text(
+                    selectedChips[index],
+                    style: TextStyle(
+                      color: isChipSelected[
+                              index] // Set text color based on chip selection
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: gestureDetector())
         ],
       ),
     );
   }
 
-  // void main() {
-  //   runApp(const MaterialApp(
-  //     home: RefineView(),
-  //   ));
-  Widget buildNumberItem(int value) {
+  Widget dropDownButton() {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      isExpanded: true,
+      icon: const Icon(
+        Icons.arrow_drop_down,
+      ),
+      iconSize: 30,
+      elevation: 15,
+      style: const TextStyle(color: Colors.black),
+      onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+        });
+      },
+      items: <String>[
+        'Available | Hey Let Us Connect',
+        'Away | Stat Discrete and Watch',
+        'Busy | Do Not Disturb | Will Catch Up Later',
+        'SOS | Emergency! Need Assistance! HELP'
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget sliderBar() {
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        Container(
+          width: double.infinity,
+          height: 50,
+        ),
+        Slider(
+          value: _selectedValue,
+          min: 1,
+          max: 100,
+          onChanged: (value) {
+            setState(() {
+              _selectedValue = value;
+            });
+          },
+        ),
+        const Positioned(
+          left: 10,
+          bottom: 0,
+          child: Text('1'),
+        ),
+        const Positioned(
+          right: 10,
+          bottom: 0,
+          child: Text('100'),
+        ),
+      ],
+    );
+  }
+
+  Widget gestureDetector() {
     return GestureDetector(
       onTap: () {
-        // Handle the selection of the number
+        // Handle Save & Explore action
       },
       child: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        margin: EdgeInsets.only(left: 5, right: 5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey),
-        ),
-        child: Text(
-          value.toString(),
-          style: TextStyle(fontSize: 16),
+            border: Border.all(),
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(255, 6, 41, 70)),
+        height: 50,
+        width: double.infinity,
+        child: const Center(
+          child: Text(
+            "Save & Explore",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
