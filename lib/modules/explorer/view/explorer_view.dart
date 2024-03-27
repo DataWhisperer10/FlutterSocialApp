@@ -3,95 +3,90 @@ import 'package:netclan_explorer/home_drawer.dart';
 import 'package:netclan_explorer/modules/refine/view/refine_view.dart';
 
 class ExplorerView extends StatefulWidget {
-  const ExplorerView({super.key});
+  const ExplorerView({Key? key}) : super(key: key);
 
   @override
   State<ExplorerView> createState() => _ExplorerViewState();
 }
 
 class _ExplorerViewState extends State<ExplorerView> {
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const HomeDrawer(),
       appBar: AppBar(
-        title: Title(
+        title: const Text(
+          "Howdy Gajanand Kumawat !!",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
             color: Colors.white,
-            child: const Text(
-              "Howdy Gajanand Kumawat !!",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: Colors.white),
-            )),
-        backgroundColor: Color.fromARGB(255, 5, 50, 59),
-        // leading: Drawer(
-        //   // shadowColor: Colors.white,
-        //   backgroundColor: Color.fromARGB(255, 5, 50, 59),
-        //   child: ListView(
-        //     padding: EdgeInsets.zero,
-        //     children: [
-        //       const DrawerHeader(
-        //         decoration: BoxDecoration(
-        //           color: Color.fromARGB(255, 233, 236, 239),
-        //         ),
-        //         child: Column(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             CircleAvatar(
-        //               radius: 30,
-        //               backgroundImage: AssetImage('assets/avatar.png'),
-        //             ),
-        //             SizedBox(height: 10),
-        //             Text(
-        //               'User Name',
-        //               style: TextStyle(fontSize: 18, color: Colors.white),
-        //             ),
-        //             Text(
-        //               'user@example.com',
-        //               style: TextStyle(color: Colors.white),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       ListTile(
-        //         leading: const Icon(Icons.home),
-        //         title: const Text('Home'),
-        //         onTap: () {
-        //           // Navigate to home page
-        //         },
-        //       ),
-        //       // Add other items as needed
-        //     ],
-        //   ),
-        // ),
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 5, 50, 59),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const RefineView();
               }));
-              // Handle the "Refine" button press
             },
             icon: const Icon(Icons.filter_list),
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            ),
-            // Text("Refine"), (
-            //   'Refine',
-            //   style: TextStyle(
-            //     color: Colors.white,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
+            color: Colors.white,
           ),
-          const Center(
-            child: Text(
-              "Refine",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          )
+        ],
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            color: Colors.white,
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+      ),
+      drawer: const HomeDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (v) {
+          setState(() {
+            selectedIndex = v;
+          });
+        },
+        currentIndex: selectedIndex,
+        selectedIconTheme: const IconThemeData(
+          color: Color.fromARGB(255, 3, 40, 64),
+        ),
+        unselectedIconTheme: const IconThemeData(color: Colors.blueGrey),
+        selectedLabelStyle: const TextStyle(
+          color: Color.fromARGB(255, 3, 40, 64),
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          color: Colors.blueGrey,
+          fontWeight: FontWeight.bold,
+        ),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.remove_red_eye),
+            label: 'Explore',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.ios_share_rounded),
+            label: 'Network',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline_rounded),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contacts_rounded),
+            label: 'Contacts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star_border_outlined),
+            label: 'Groups',
+          ),
         ],
       ),
     );
