@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netclan_explorer/modules/refine/view/refine_view.dart';
+import 'package:netclan_explorer/modules/explorer/view/explorer_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const RefineView(),
+      home: const ExplorerView(),
     );
   }
 }

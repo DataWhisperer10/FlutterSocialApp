@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:netclan_explorer/modules/explorer/view/explorer_view.dart';
 
 class RefineView extends StatefulWidget {
   const RefineView({Key? key}) : super(key: key);
@@ -35,7 +36,11 @@ class _RefineViewState extends State<RefineView> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop(MaterialPageRoute(builder: ((context) {
+              return ExplorerView();
+            })));
+          },
           icon: const Icon(Icons.arrow_back_ios),
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -108,7 +113,7 @@ class _RefineViewState extends State<RefineView> {
                 ),
               ),
               maxLength: 250,
-              maxLines: 3,
+              maxLines: null,
               onChanged: (text) {
                 setState(() {});
               },
